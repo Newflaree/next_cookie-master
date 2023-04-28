@@ -7,6 +7,8 @@ import {
 } from 'react';
 // Next.js
 import { GetServerSideProps } from 'next';
+import Cookies from 'js-cookie';
+// Axios
 // Material UI
 import {
   Button,
@@ -19,13 +21,16 @@ import {
   RadioGroup
 } from '@mui/material';
 // JS-Cookie
-import Cookies from 'js-cookie';
+import axios from 'axios';
 // Layouts
 import { MainLayout } from '@/components/layouts';
-import axios from 'axios';
+
+interface Props {
+  theme: string;
+}
 
 
-const ThemeChangerPage: FC = ( props ) => {
+const ThemeChangerPage: FC<Props> = ({ theme }) => {
   const [ currentTheme, setCurrentTheme ] = useState( 'light' );
 
   const onThemeChange = ( event: ChangeEvent<HTMLInputElement> ) => {
@@ -89,9 +94,11 @@ const ThemeChangerPage: FC = ( props ) => {
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { theme = 'light', name = 'No name' } = req.cookies;
 
+  const validThemes = [ 'light', 'dark', 'custom' ];
+
   return {
     props: {
-      theme,
+      theme: validThemes.includes( theme ) ? theme : 'light',
       name
     }
   }
