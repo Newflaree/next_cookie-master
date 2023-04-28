@@ -1,5 +1,22 @@
-import {ChangeEvent, useState} from 'react';
-import { Card, CardContent, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@mui/material';
+// React
+import {
+  ChangeEvent,
+  useEffect,
+  useState
+} from 'react';
+// Material UI
+import {
+  Card,
+  CardContent,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup
+} from '@mui/material';
+// JS-Cookie
+import Cookies from 'js-cookie';
+// Layouts
 import { MainLayout } from '@/components/layouts';
 
 
@@ -9,7 +26,14 @@ const ThemeChangerPage = () => {
   const onThemeChange = ( event: ChangeEvent<HTMLInputElement> ) => {
     const selectedTheme = event.target.value;
     setCurrentTheme( selectedTheme );
+
+    localStorage.setItem( 'theme', selectedTheme );
+    Cookies.set( 'theme', selectedTheme );
   }
+
+  useEffect( () => {
+    console.log( localStorage.getItem( 'theme' ) );
+  }, [] );
 
   return (
     <MainLayout>
