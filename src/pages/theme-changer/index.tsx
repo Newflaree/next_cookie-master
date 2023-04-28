@@ -1,9 +1,12 @@
 // React
 import {
   ChangeEvent,
+  FC,
   useEffect,
   useState
 } from 'react';
+// Next.js
+import { GetServerSideProps } from 'next';
 // Material UI
 import {
   Card,
@@ -20,15 +23,15 @@ import Cookies from 'js-cookie';
 import { MainLayout } from '@/components/layouts';
 
 
-const ThemeChangerPage = () => {
+const ThemeChangerPage: FC = ( props ) => {
   const [ currentTheme, setCurrentTheme ] = useState( 'light' );
 
   const onThemeChange = ( event: ChangeEvent<HTMLInputElement> ) => {
     const selectedTheme = event.target.value;
     setCurrentTheme( selectedTheme );
 
-    localStorage.setItem( 'theme', selectedTheme );
     Cookies.set( 'theme', selectedTheme );
+    Cookies.set( 'name', 'Camilo' );
   }
 
   useEffect( () => {
@@ -69,6 +72,17 @@ const ThemeChangerPage = () => {
       </Card>
     </MainLayout>
   );
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { theme = 'light', name = 'No name' } = req.cookies;
+
+  return {
+    props: {
+      theme,
+      name
+    }
+  }
 }
 
 export default ThemeChangerPage;
