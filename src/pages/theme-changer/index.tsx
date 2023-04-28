@@ -9,6 +9,7 @@ import {
 import { GetServerSideProps } from 'next';
 // Material UI
 import {
+  Button,
   Card,
   CardContent,
   FormControl,
@@ -21,6 +22,7 @@ import {
 import Cookies from 'js-cookie';
 // Layouts
 import { MainLayout } from '@/components/layouts';
+import axios from 'axios';
 
 
 const ThemeChangerPage: FC = ( props ) => {
@@ -34,8 +36,14 @@ const ThemeChangerPage: FC = ( props ) => {
     Cookies.set( 'name', 'Camilo' );
   }
 
+  const onClick = async () => {
+    const { data } = await axios.get( '/api/hello' );
+    console.log({ data });
+  }
+
   useEffect( () => {
-    console.log( localStorage.getItem( 'theme' ) );
+    //console.log( localStorage.getItem( 'theme' ) );
+    console.log( Cookies.get( 'theme' ) );
   }, [] );
 
   return (
@@ -68,6 +76,10 @@ const ThemeChangerPage: FC = ( props ) => {
               />
             </RadioGroup>
           </FormControl>
+
+          <Button onClick={ onClick }>
+            Solicitud
+          </Button>
         </CardContent>
       </Card>
     </MainLayout>
